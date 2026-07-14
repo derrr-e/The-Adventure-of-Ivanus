@@ -1,7 +1,7 @@
 from random import choice, randint
 
-from enemies import enemies
-from player import player
+from enemies import enemies, Enemy
+from player import Player
 from items import items
 
 from locations import locations
@@ -145,58 +145,7 @@ def menu():
     if location is not None:
         game(location) 
 
-def inventory(player):
-    
-    
-    while True:
-    
-        if not player['items']:
-            say("Твой инвентарь пуст", 2)
-            return
-            
-        inventory_items = list(player["items"].items())
-        
-        
-        for number, (item, count) in enumerate(inventory_items, start=1):
-            say(f'{number}. {items[item]['name']}: {count}', 1.5)
-        
-        say(f'\n{number + 1}. Выход', 2)    
-        
-        
-        chose = get_choice(len(inventory_items) + 1)
-        
-        
-        if chose <= len(inventory_items):
-        
-            item, count = inventory_items[chose - 1]
-        
-        else:
-            break    
-        
-        print(f'''
-    {items[item]['name']}
-    {items[item]['discription']}
 
-    1. {items[item]['action']}
-    2. Выход              
-                
-                ''')
-
-        answer = get_choice(2)
-        
-        if answer == 1:
-            say(f'Ты {items[item]['action'].lower()} {items[item]['name'].lower()}')
-            
-            change_hp(player, items[item]['heal'])
-            
-            player['items'][item] -= 1
-            
-            
-            if player['items'][item] == 0:
-                del player['items'][item]
-            
-            input('Нажми Enter чтобы продолжить')
-            
 
 def ch_loc(location):
     return locations[location['next']]
@@ -397,5 +346,6 @@ def ending():
     say('Вот так все и закончилось.... наверное?', 2)
 
 
-if __name__ == '__main__':
-    menu()
+
+# if __name__ == '__main__':
+#     menu()
