@@ -1,29 +1,26 @@
 from utilits import say
 
-class Player:
-    
-    def __init__(self, name,  hp):
-        
-        self.name = name
-        self.hp = hp
+from character import Character
 
+from weapon import Weapon
+
+class Player(Character):
+    
+    def __init__(self, name,  hp, weapon):
+        
+        super().__init__(name, hp)
+        
         self.items = {}  
         
-        self.weapon = None  
+        self.weapon = weapon
 
-    def take_damage(self, damage):
+    def attack(self, target):
         
-        self.hp -= damage
-
-    def attack(self, enemy):
+        damage = self.weapon.damage
         
-        if self.weapon:
-            damage = self.weapon.damage
+        target.take_damage(damage)
         
-        else:
-            damage = 1
-        
-        enemy.take_damage(damage)
+        return damage
 
     def __str__(self):
         return f'Имя: {self.name}, Здоровье: {self.hp} '
@@ -84,7 +81,7 @@ class Player:
 # # player = {
     
 #     'hp': 100,
-#     'dm': 5,
+#     'damage': 5,
 #     'items': {
         
         

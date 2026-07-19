@@ -1,45 +1,37 @@
 from arts import arts
-import random
+from random import randint
 
-class Enemy:
+from character import Character
+
+class Enemy(Character):
+    
     
     def __init__(self, name, hp, damage):
+        super().__init__(name, hp)
         
-        self.name = name    
-        self.hp = hp
         self.damage = damage
     
-    def attack(self, player):
-         player.take_damage(self.damage)
-
-    def take_damage(self, damage):
+    enemy_presets = {
         
-        self.hp -= damage
+        'goblin': {'hp': (25, 30), 'damage': 5, 'name': 'Гоблин'},
+        'elf': {'hp': (15, 20), 'damage': 7, 'name': 'Ельф'},
+        
+        
+        
+    }
+    
+    def attack(self, target,):
+        target.take_damage(self.damage)
+        
+        return self.damage
 
     def __str__(self):
         return f'Хп:{self.hp} Урон:{self.damage} Имя:{self.name}'
-        
-        
-
-
-
-enemies = {
     
-    'goblin':
-{
-    'hp': 30,
-    'dm': 4,
-    'art': 'art',
-    'name': 'Гоблин'
-},
+    @classmethod
+    def from_name(cls, key):
+        data = cls.enemy_presets[key]
+        hp = randint(*data['hp'])
+        return cls(data['name'], hp, data['damage'])
+        
 
-    'Elf':
-{
-    'hp': 20,
-    'dm': 3,
-    'art': 'art',
-    'name': 'Эльф'
-
-},
-    
-}
