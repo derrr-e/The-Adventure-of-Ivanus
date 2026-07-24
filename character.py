@@ -12,6 +12,10 @@ class Character(ABC):
         
         self.hp -= amount
     
+    def heal(self, amount):
+        
+        self.hp += amount
+    
     @abstractmethod
     def attack(self, target):
         pass
