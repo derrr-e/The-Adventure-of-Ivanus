@@ -6,7 +6,7 @@ from weapon import Weapon
 
 class Player(Character):
     
-    def __init__(self, name,  hp, weapon):
+    def __init__(self, name,  hp, weapon, extra_damage=0):
         
         super().__init__(name, hp)
         
@@ -14,9 +14,11 @@ class Player(Character):
         
         self.weapon = weapon
 
+        self.extra_damage = extra_damage
+        
     def attack(self, target):
         
-        damage = self.weapon.damage
+        damage = self.weapon.damage + self.extra_damage
         
         target.take_damage(damage)
         
