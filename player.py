@@ -16,13 +16,11 @@ class Player(Character):
 
         self.extra_damage = extra_damage
         
-    def attack(self, target):
+    def attack(self, target) -> dict: 
         
         damage = self.weapon.damage + self.extra_damage
         
-        target.take_damage(damage)
-        
-        return damage
+        return {'attacker': self, 'target': target, 'damage': damage}
 
     def __str__(self):
         return f'Имя: {self.name}, Здоровье: {self.hp} '

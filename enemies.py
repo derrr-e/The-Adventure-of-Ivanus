@@ -21,9 +21,8 @@ class Enemy(Character):
     }
     
     def attack(self, target,):
-        target.take_damage(self.damage)
         
-        return self.damage
+        return {'attacker': self, 'target': target, 'damage': self.damage}
 
     def __str__(self):
         return f'Хп:{self.hp} Урон:{self.damage} Имя:{self.name}'
