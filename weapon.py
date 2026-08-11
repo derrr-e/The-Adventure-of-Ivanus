@@ -6,6 +6,7 @@ class Weapon(Item):
         'fists': {'name': 'Кулаки', 'damage': 1, 'description': 'Обычные кулаки, которые есть почти у всех'},
         'stick': {'name': 'Палка', 'damage': 5, 'description': 'Палка, которая раньше была частью какого то дерева, но сейчас ее можно использовать как оружие!'},
         'sword': {'name': 'Меч', 'damage': 10, 'description': 'Древний меч'},
+        'God_sword': {'name': 'Меч бога', 'damage': 999999, 'description': 'ема что это'},
     }
 
     def __init__(self, name, description, damage):
