@@ -1,7 +1,7 @@
 from random import choice
 
-from player import Player
-from enemies import Enemy
+from mechanics.player import Player
+from mechanics.enemies import Enemy
 from utilits import say, get_choice
 
 
@@ -80,7 +80,7 @@ def interpret_result(attacker=None, target=None, damage=None, fled=None) -> dict
         if damage is not None:
             if damage:
                 target.take_damage(damage)
-                return {'message': f'Ты наносишь {target.name} {damage} урона', 'battle_over': False}
+                return {'message': f'Ты наносишь {target.name['dat']} {damage} урона', 'battle_over': False}
             
             return {'message': f'Ты промахнулся', 'battle_over': False}             
     
@@ -89,9 +89,9 @@ def interpret_result(attacker=None, target=None, damage=None, fled=None) -> dict
             if damage:
                 target.take_damage(damage)
     
-                return {'message': f'{attacker.name} наносит тебе {damage} урона', 'battle_over': False}
+                return {'message': f'{attacker.name['nom']} наносит тебе {damage} урона', 'battle_over': False}
             
-            return {'message': f'{attacker.name} промахивается', 'battle_over': False}
+            return {'message': f'{attacker.name['nom']} промахивается', 'battle_over': False}
         
     return {'message': 'Ошибка: неизвестный результат боя', 'battle_over': False}
     
@@ -140,7 +140,7 @@ def get_random_enemy(possible_enemies):
 
 
 
-def run_battle(player, current_location):
+def run_battle(player, current_location, intro_title='На тебя напал {name}'):
     
     enemy = get_random_enemy(current_location['enemies'])
     
@@ -148,6 +148,7 @@ def run_battle(player, current_location):
     
     gen = battle.run()
     
+    say(intro_title.format(name=enemy.name['nom']))
     
     actions = {}
     

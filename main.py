@@ -1,11 +1,11 @@
 from random import choice, randint
 
-from enemies import enemies, Enemy
-from player import Player
-from items import items
+from mechanics.enemies import enemies, Enemy
+from mechanics.player import Player
+from mechanics.items import items
 
 from locations import locations
-from sp_events import sp_event
+from mechanics.sp_events import sp_event
 
 from utilits import get_choice, change_hp, show_location, say
 
@@ -72,7 +72,7 @@ def item(player):
         player['items'][item] = player['items'].get(item, 0) + 1
 
         say('Яблоко было добавлено в твой инвентарь!')
-        
+
 
 def enemy(player, enemy_name=None, show_intro=True):
     
@@ -169,23 +169,7 @@ def ch_loc_menu():
     return locs[answer]
         
         
-def rest(player,):
 
-    
-    print('Ты присел отдохнуть')
-
-    if randint(1, 100) <= 20:
-        enemy_name = choice(list(enemies.keys()))
-    
-        enemy(player, enemy_name, False)
-    
-        say('', 2)
-        say('Это была ужасная ночь', 2)
-        
-        return
-    
-    else:
-        change_hp(player, +5)
 
 def location_menu():
     

@@ -1,8 +1,8 @@
 from utilits import say
 
-from character import Character
+from mechanics.character import Character
 
-from weapon import Weapon
+from mechanics.weapon import Weapon
 
 class Player(Character):
     
