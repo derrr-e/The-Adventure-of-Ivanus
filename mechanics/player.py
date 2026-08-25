@@ -1,9 +1,9 @@
 from utilits import say
 
 from mechanics.character import Character
-
 from mechanics.weapon import Weapon
-
+from presets.items_presets import items_presets
+from mechanics.exeptions import ItemNotFoundError, ItemCannotBeUsedError, ItemPresetNotFoundError
 class Player(Character):
     
     def __init__(self, name,  hp, weapon, extra_damage=0):
@@ -15,6 +15,36 @@ class Player(Character):
         self.weapon = weapon
 
         self.extra_damage = extra_damage
+    
+    def add_item(self, key, count=1):
+        self.items[key] = self.items.get(key, 0) + count
+
+    def use_item(self, key):
+        if self.items.get(key, 0 ) <= 0:
+            raise ItemNotFoundError(key)
+            
+        try:
+            data = items_presets[key]
+
+        except KeyError:
+            raise ItemPresetNotFoundError(key)
+        
+        cls = data.pop('class')
+        item = cls(**data)
+        
+        if item.action is not None:
+            item.use(self)
+            
+            self.items[key] -= 1
+                
+            if self.items[key] <= 0:
+                del self.items[key] 
+            return
+        
+        else:
+            raise ItemCannotBeUsedError()
+
+        
         
     def attack(self, target) -> dict: 
         
