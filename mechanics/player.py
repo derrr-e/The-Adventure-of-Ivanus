@@ -17,7 +17,11 @@ class Player(Character):
         self.extra_damage = extra_damage
     
     def add_item(self, key, count=1):
+        if key not in items_presets:
+            raise ItemPresetNotFoundError(key)
+        
         self.items[key] = self.items.get(key, 0) + count
+        
 
     def use_item(self, key):
         if self.items.get(key, 0 ) <= 0:
@@ -42,7 +46,7 @@ class Player(Character):
             return
         
         else:
-            raise ItemCannotBeUsedError()
+            raise ItemCannotBeUsedError(key)
 
         
         
