@@ -49,31 +49,6 @@ def test():
         actions[answer]()
         
 
-def item(player):
-    item = choice(list(items))
-    item_data = items[item]
-    item_name = item_data['name']
-    
-    
-    say('Ты нашел предмет!', 1.5) 
-    say(f'Это {item_name}')
-    
-    print(f'''Взять {item_name}?
-1. Взять
-2. Пусть дальше валяется''')
-    
-    answer = get_choice(2)
-    
-    if answer == 2:
-        return
-        
-    else:
-        
-        player['items'][item] = player['items'].get(item, 0) + 1
-
-        say('Яблоко было добавлено в твой инвентарь!')
-
-
 def enemy(player, enemy_name=None, show_intro=True):
     
     if enemy_name is None:
