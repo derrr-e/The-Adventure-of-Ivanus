@@ -1,9 +1,10 @@
-from random import randint, choice
+from random import randint, choice, choices
 
 from mechanics.player import Player
 from mechanics.battle import run_battle
 from utilits import say, get_choice
 from presets.items_presets import items_presets
+from locations import locations
 
 def rest(player, current_location):
 
@@ -52,3 +53,37 @@ def find_item(player):
         say('Ты просто прошел мимо')
         input('Нажми Enter чтобы продолжить')
         return
+    
+def location_menu():
+    
+    print('''
+1. Идти дальше
+2. Отдохнуть
+3. Открыть инвентарь
+4. Выйти
+          ''')
+    
+    return get_choice(4)
+    
+def ch_loc(location):
+    return locations[location['next']]
+
+def sp_event(player):
+    pass
+
+def random_event(player, location):
+    
+    if location['event_weights'] is None:
+        return
+    
+    event_handlers = {
+        'enemy': lambda: run_battle(player, location),
+        'item': lambda: find_item(player),
+        'sp_event': lambda: sp_event(player)
+    }
+    
+    weights = location['event_weights']
+    
+    event_type = choices(list(weights.keys()), weights=list(weights.values()))[0]
+    
+    return event_handlers[event_type]()

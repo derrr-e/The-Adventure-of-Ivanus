@@ -11,10 +11,7 @@ from utilits import get_choice, change_hp, show_location, say
 
 
 
-def random_event(player):
-    event = choice([enemy, item, sp_event])
-    
-    return event(player) 
+
 
 def test():
     while True:
@@ -48,68 +45,7 @@ def test():
         
         actions[answer]()
         
-
-def enemy(player, enemy_name=None, show_intro=True):
-    
-    if enemy_name is None:
-    
-        enemy = choice(list(enemies.keys()))
-    
-        enemy_data = enemies[enemy] 
-    
-    else:
-        enemy_data = enemies[enemy_name]
-    
-    hp = enemy_data['hp']
-    enemy_dm = enemy_data['dm']
-    name = enemy_data['name']
-    
-    art = enemy_data['art']
-    
-    if show_intro:
-        say(f'На тебя напал {name}', 3)
-    
-    
-    while hp > 0 and player['hp'] > 0:
-        
-        print(art)
-        
-    
-        print('''Выбери действие!
-1. Ударить
-2. Проверить
-3. Открыть инвентарь
-              ''')
-        
-        answer = get_choice(3)
-                
-        if answer == 1:
-            say('Ты нанес врагу 5 урона!', 1.5)
-            hp -= 5
-            
-            say('Враг бьет тебя!')
-            
-            change_hp(player, -enemy_dm)
-        
-        
-        elif answer == 2:
-            print(f'Здоровье: {hp}, Урон: {enemy_dm}')
-            
-        elif answer == 3:
-            inventory(player)
-
-        
-    if hp <= 0:
-        print('Враг повержен!')
-        return
-
-    else:
-        print('Ты погиб...')
-        
-        input('Нажмите Enter чтобы вернуться в меню')
-        
-        menu()
-        
+   
 def menu():
     print('Добро пожаловать в The adventure of Ivanus!')
     
@@ -122,40 +58,9 @@ def menu():
 
 
 
-def ch_loc(location):
-    return locations[location['next']]
+       
+    
 
-def ch_loc_menu():
-    
-    print('''
-1. Таверна
-2. Лес
-3. Гора   
-          ''')
-    
-    answer = get_choice(3)
-    
-    locs = {
-        1: 'tavern',
-        2: 'forest',
-        3: 'mountain', 
-    }
-
-    return locs[answer]
-        
-        
-
-
-def location_menu():
-    
-    print('''
-1. Идти дальше
-2. Отдохнуть
-3. Открыть инвентарь
-4. Выйти
-          ''')
-    
-    return get_choice(4)
 
 def intro():
     
