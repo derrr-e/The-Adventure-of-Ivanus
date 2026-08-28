@@ -15,4 +15,4 @@ apple = Consumable.from_name('apple')
 
 current_location = locations['forest']
     
-rest(player, current_location)
+run_battle(player, current_location)
