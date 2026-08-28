@@ -3,7 +3,7 @@ from random import choice
 from mechanics.player import Player
 from mechanics.enemies import Enemy
 from utilits import say, get_choice
-
+from exeptions import LocationHasNoEnemiesError
 
 class Battle():
     
@@ -53,7 +53,7 @@ class Battle():
             
             winner = self.player if self.player.hp > 0 else self.enemy
             
-            return {'winner': winner, 'battle_over': True}
+            return {'message': 'Ты выиграл!' if self.player.hp > 0 else 'Ты проиграл', 'battle_over': True}
         
 def try_escape(player, enemy):
     
@@ -138,12 +138,18 @@ def get_random_enemy(possible_enemies):
     
     return Enemy.from_name(key)
 
-
-
+def handle_battle_outcome(player, outcome):
+    say(outcome['message'])
+    if outcome['battle_over']:
+        return {'status': 'alive' if player.hp > 0 else 'dead'}
+    return None
+    
 def run_battle(player, current_location, intro_title='На тебя напал {name}'):
+    if current_location['enemies'] is not None:
+        enemy = get_random_enemy(current_location['enemies'])
     
-    enemy = get_random_enemy(current_location['enemies'])
-    
+    else:
+        raise LocationHasNoEnemiesError(current_location['name'])
     battle = Battle(player, enemy)
     
     gen = battle.run()
@@ -160,18 +166,12 @@ def run_battle(player, current_location, intro_title='На тебя напал {
             result = next(gen)
         except StopIteration as e:
         
-            winner = e.value['winner']
+            outcome = e.value
                     
-            if winner == player:
-                print('Ты победил врага!')
-                    
-            elif winner == enemy:
-                print('Ты проиграл')
-            
-            print('Бой окончен')
-            
-            return
+            battle_result = handle_battle_outcome(player, outcome)
 
+            return battle_result
+            
         if result == 'need_player_action':
                     
                 while True:
@@ -184,16 +184,13 @@ def run_battle(player, current_location, intro_title='На тебя напал {
                         action_result = gen.send(menu_result['action'])     # отправляет выбор игрока в логический цикл на action = yield и принимает result
 
                         outcome = interpret_result(**action_result)
-                        say(outcome['message'])
-                        if outcome['battle_over']:
-                            return
+                        battle_result = handle_battle_outcome(player, outcome)
+                        if battle_result:
+                            return battle_result
                         break
                         
-                        
                     else:
-                        
                         handle_non_turn_action(menu_result['action'],  enemy, player)
-                        
                         continue
             
             
@@ -202,9 +199,9 @@ def run_battle(player, current_location, intro_title='На тебя напал {
             hit_inf = next(gen)
             
             outcome = interpret_result(**hit_inf)
-            say(outcome['message'])
-            if outcome['battle_over']:
-                return
+            battle_result = handle_battle_outcome(player, outcome)
+            if battle_result:
+                return battle_result
             
 
             
