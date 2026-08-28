@@ -4,24 +4,28 @@ locations = {
         "description": "Тихое место, где можно отдохнуть и всегда найти собеседника",
         "next": "forest",
         "enemies": None,
+        "event_weights": {'enemy': 0, 'item': 0, 'sp_event': 0,},
     },
     "forest": {
         "name": "Лес",
         "description": "Много деревьев",
         "next": "mountain",
         "enemies": ("elf", "goblin"),
+        "event_weights": {'enemy': 35, 'item': 35, 'sp_event': 30,},
     },
     "mountain": {
         "name": "Подъем на гору",
         "description": "Осталось еще немного",
         "next": "mountain_top",
         "enemies": ("goblin",),
+        "event_weights": {'enemy': 40, 'item': 35, 'sp_event': 25,},
     },
     "mountain_top": {
         "name": "Вершина горы с могучим орлом",
         "description": "Наконец-то мы дошли до сюда.",
         "next": "",
         "enemies": ("elf",),
+        "event_weights": {'enemy': 40, 'item': 30, 'sp_event': 30,},
         "end": True,
     },
 }
