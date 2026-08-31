@@ -2,7 +2,7 @@ from random import randint, choice, choices
 
 from mechanics.player import Player
 from mechanics.battle import run_battle
-from utilits import say, get_choice
+from utilits import say, get_choice, show_location
 from presets.items_presets import items_presets
 from locations import locations
 
@@ -87,3 +87,13 @@ def random_event(player, location):
     event_type = choices(list(weights.keys()), weights=list(weights.values()))[0]
     
     return event_handlers[event_type]()
+
+def triger_Random_events(player, location):
+    count = randint(3, 7)
+    
+    for _ in range(count):
+        result = random_event(player, location)
+        if result and result['status'] == 'dead':
+            return{'status': 'dead'}
+    return{'status': 'alive'}
+
