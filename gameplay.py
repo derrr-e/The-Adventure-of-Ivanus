@@ -18,13 +18,13 @@ def rest(player, current_location):
         say('', 2)
         say('Это была ужасная ночь', 2)
         
-        return
+        return {'status': 'alive' if player.hp > 0 else 'dead'}
     
     else:
         player.heal(5)
         say('Твое здоровье пополнено на 5!')
         
-        return
+        return {'status': 'alive' if player.hp > 0 else 'dead'}
     
     
 def find_item(player):
@@ -60,7 +60,7 @@ def location_menu():
 1. Идти дальше
 2. Отдохнуть
 3. Открыть инвентарь
-4. Выйти
+4. Выйти (прогресс не будет сохранен!!!!!)
           ''')
     
     return get_choice(4)
@@ -71,6 +71,22 @@ def ch_loc(location):
 def sp_event(player):
     pass
 
+def handle_location_menu(player, location):
+    choice = location_menu()
+    if choice == 1:
+        return{'status_alive'}
+    
+    elif choice == 2:
+        rest_result = rest(player, location)
+        
+        return rest_result
+
+    elif choice == 3:
+        player.open_inventory()
+        
+    else:
+        return {'status': 'quit'}
+    
 def random_event(player, location):
     
     if location['event_weights'] is None:
@@ -88,7 +104,7 @@ def random_event(player, location):
     
     return event_handlers[event_type]()
 
-def triger_Random_events(player, location):
+def triger_random_events(player, location):
     count = randint(3, 7)
     
     for _ in range(count):
