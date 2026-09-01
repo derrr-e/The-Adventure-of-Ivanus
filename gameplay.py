@@ -74,7 +74,7 @@ def sp_event(player):
 def handle_location_menu(player, location):
     choice = location_menu()
     if choice == 1:
-        return{'status_alive'}
+        return{'status': 'alive'}
     
     elif choice == 2:
         rest_result = rest(player, location)
@@ -113,3 +113,20 @@ def triger_random_events(player, location):
             return{'status': 'dead'}
     return{'status': 'alive'}
 
+def game(player, start_location_key):
+    current_location = locations[start_location_key]
+    
+    while not current_location.get('end', True):
+        show_location(current_location)
+        
+        event_result = triger_random_events(player, current_location)
+        
+        if event_result['status'] == 'dead':
+            return{'status': 'dead'}
+        
+        menu_result = handle_location_menu(player, current_location)
+        if menu_result != 'alive':
+            return menu_result
+        current_location = ch_loc(current_location)
+    
+    return {'status': 'completed'}
