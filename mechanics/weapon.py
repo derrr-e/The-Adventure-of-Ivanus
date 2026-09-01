@@ -1,13 +1,8 @@
 from mechanics.items import Item
+from presets import weapon_presets
 
 class Weapon(Item):
 
-    wearons = {
-        'fists': {'name': 'Кулаки', 'damage': 1, 'description': 'Обычные кулаки, которые есть почти у всех'},
-        'stick': {'name': 'Палка', 'damage': 3, 'description': 'Палка, которая раньше была частью какого то дерева, но сейчас ее можно использовать как оружие!'},
-        'sword': {'name': 'Меч', 'damage': 13, 'description': 'Древний меч'},
-        'God_sword': {'name': 'Меч бога', 'damage': 999999, 'description': 'ема что это'},
-    }
 
     def __init__(self, name, description, damage):
         
@@ -17,7 +12,7 @@ class Weapon(Item):
 
     @classmethod
     def from_name(cls, key):
-        data = cls.wearons[key]
+        data = weapon_presets[key]
         return cls(data['name'], data['description'], data['damage'])
     
 fists = Weapon.from_name('fists')
