@@ -3,7 +3,9 @@ from locations import locations
 
 def intro():
     
-    show_location(locations['tavern'])
+    current_location = locations['tavern']
+    
+    show_location(current_location['key'])
     
     say('Ты видишь странного старика, который сидит совсем один...', 2.5)
     
@@ -22,7 +24,7 @@ def intro():
     answer = get_choice(2)
     
     if answer == 2:
-        print('Ты так и не узнал что у тебя могло бы быть за приключение. Может оно и к лучшему?', 3)
+        say('Ты так и не узнал что у тебя могло бы быть за приключение. Может оно и к лучшему?', 3)
         return 
     
     else:
@@ -31,4 +33,4 @@ def intro():
         say('Ты вышел из таверны и каким то образом сам знал куда надо идти', 3)
         
         
-        return 'forest'
+        return locations[current_location['next']]
