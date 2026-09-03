@@ -1,8 +1,12 @@
 from random import choice, randint
 
-from mechanics.enemies import enemies, Enemy
+from mechanics.enemies import Enemy
 from mechanics.player import Player
-from mechanics.items import items
+from mechanics.items import Item
+from gameplay import game
+from story.intro import intro
+from mechanics.weapon import Weapon
+from presets.weapon_presets import wearons
 
 from locations import locations
 from mechanics.sp_events import sp_event
@@ -13,133 +17,52 @@ from utilits import get_choice, change_hp, show_location, say
 
 
 
-def test():
-    while True:
-        say('''
-1. Бой
-2. Найти предмет
-3. Показать игрока
-4. Создать случайное событие
-5. Запустить game()
-6. Запустить спец ивент
-7. Сменить локацию
-8. выход
-
-''')
-        
-        answer = get_choice(8)
-        
-        actions = {
-            
-            1: lambda: enemy(player),
-            2: lambda: item(player),
-            3: lambda: print(player),   
-            4: lambda: random_event(player),
-            5: lambda: game(intro()),
-            6: lambda: sp_event(player),
-            7: lambda: game(ch_loc_menu()),
-        }
-        
-        if answer == 8:
-            break
-        
-        actions[answer]()
-        
-   
+  
 def menu():
     print('Добро пожаловать в The adventure of Ivanus!')
     
     say('Для выбора ответа введите цифру и нажмите Enter!')
     
     input('''Нажмите любую клавишу чтобы начать''')
-    location = intro()
+    
+    return intro()
+
+
+def create_player():
+     
+    fists = Weapon.from_name('fists')
+    return Player(name= "ivanus", hp= 100, weapon=fists, )
+
+
+def main():
+    location = menu()
+    
     if location is not None:
-        game(location) 
+             game(location)
 
+    player = create_player()
+    result = game(player, location)
+    
+    if result == 'dead':
+        input('''
+Игра окончена!
 
+              
+Нажми Enter чтобы вернутся в меню              
+              ''')
+        menu()
+        
+    elif result == 'quit':
+        say('Выходим...', 3)
+    
+    elif result == 'completed':
+        say('Ты прошел игру!!!!')
+        
+        say('Над игрой старались:')
+        
+        print('Der')
 
-       
-    
-
-
-def intro():
-    
-    show_location(locations['tavern'])
-    
-    say('Ты видишь странного старика, который сидит совсем один...', 2.5)
-    
-    say('Подойдя к нему ты видишь что ему не хорошо и спрашиваешь нужна ли ему помощь', 2.5)
-    
-    say('Старик: Внучок, будь другом, принеси мне минералочки', 2)
-    
-    say('Старик: Она находится на горе с могучим орлом, я бы и сам туда зашел, но денег на лосси нет :-(', 3)
-    
-    say('(Лосси это лосетакси)', 1.5)
-    
-    print('''Согласиться или нет?
-1. Конечно помогу
-2. Нет, у меня своих дел полно
-          ''')
-    answer = get_choice(2)
-    
-    if answer == 2:
-        print('Ты так и не узнал что у тебя могло бы быть за приключение. Может оно и к лучшему?', 3)
-        return 
-    
-    else:
-        say('Ты: Конечно помогу', 2)
-        say('Старик: Спасибо', 2)
-        say('Ты вышел из таверны и каким то образом сам знал куда надо идти', 3)
-        
-        
-        return 'forest'
-
-def game(start_location):
-    
-    current_location = locations[start_location]
-    
-    
-
-    while not current_location.get('end', False):
-        
-        rested = False
-        
-        show_location(current_location)
-        
-        
-             
-        random_event(player)
-        
-        random_event(player)
-        
-        
-        while True:
-            
-            answer = location_menu()
-
-            if answer == 1:
-                break
-                
-            elif answer == 2:
-                
-                if rested:
-                    say('Ты уже отдыхал здесь...')
-                    
-                else:
-                    rest(player)
-                    rested = True
-            
-            elif answer == 3:
-                inventory(player)
-            
-            else:
-                return
-            
-        current_location = ch_loc(current_location)
-        
-        
-    ending()
-
+        return
 def ending():
     show_location(locations['mountain_top'])
     
@@ -211,5 +134,5 @@ def ending():
 
 
 
-# if __name__ == '__main__':
-#     menu()
+if __name__ == '__main__':
+    menu()
