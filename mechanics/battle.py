@@ -3,7 +3,7 @@ from random import choice
 from mechanics.player import Player
 from mechanics.enemies import Enemy
 from utilits import say, get_choice
-from exeptions import LocationHasNoEnemiesError
+from mechanics.exeptions import LocationHasNoEnemiesError
 
 class Battle():
     
