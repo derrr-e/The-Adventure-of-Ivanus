@@ -1,5 +1,5 @@
 from mechanics.items import Item
-from presets import weapon_presets
+from presets.weapon_presets import wearons
 
 class Weapon(Item):
 
@@ -12,7 +12,7 @@ class Weapon(Item):
 
     @classmethod
     def from_name(cls, key):
-        data = weapon_presets[key]
+        data = wearons[key]
         return cls(data['name'], data['description'], data['damage'])
     
 fists = Weapon.from_name('fists')
