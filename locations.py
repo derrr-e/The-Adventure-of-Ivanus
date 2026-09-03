@@ -1,5 +1,6 @@
 locations = {
     "tavern": {
+        'key': 'tavern',
         "name": "Таверна",
         "description": "Тихое место, где можно отдохнуть и всегда найти собеседника",
         "next": "forest",
@@ -7,6 +8,7 @@ locations = {
         "event_weights": {'enemy': 0, 'item': 0, 'sp_event': 0,},
     },
     "forest": {
+        'key': 'forest',
         "name": "Лес",
         "description": "Много деревьев",
         "next": "mountain",
@@ -14,6 +16,7 @@ locations = {
         "event_weights": {'enemy': 35, 'item': 35, 'sp_event': 30,},
     },
     "mountain": {
+        'key': 'mountain',
         "name": "Подъем на гору",
         "description": "Осталось еще немного",
         "next": "mountain_top",
@@ -21,6 +24,7 @@ locations = {
         "event_weights": {'enemy': 40, 'item': 35, 'sp_event': 25,},
     },
     "mountain_top": {
+        'key': 'mountain_top',
         "name": "Вершина горы с могучим орлом",
         "description": "Наконец-то мы дошли до сюда.",
         "next": "",
