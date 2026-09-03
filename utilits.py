@@ -1,4 +1,5 @@
 from time import sleep
+from locations import locations
 
 def direction(value, gender):
     if value != 0:
@@ -55,5 +56,6 @@ def say(text='', delay = 1):
     if text_delay > 0:
         sleep(delay * text_delay)
 
-def show_location(location):
+def show_location(key):
+    location = locations[jkey]
     say(f'{location['name']}, {location['description'].lower()}', 2)
