@@ -57,5 +57,5 @@ def say(text='', delay = 1):
         sleep(delay * text_delay)
 
 def show_location(key):
-    location = locations[jkey]
+    location = locations[key]
     say(f'{location['name']}, {location['description'].lower()}', 2)
