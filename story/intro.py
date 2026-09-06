@@ -33,4 +33,4 @@ def intro():
         say('Ты вышел из таверны и каким то образом сам знал куда надо идти', 3)
         
         
-        return locations[current_location['next']]
+        return current_location['next']
