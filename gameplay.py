@@ -116,8 +116,8 @@ def triger_random_events(player, location):
 def game(player, start_location_key):
     current_location = locations[start_location_key]
     
-    while not current_location.get('end', True):
-        show_location(current_location)
+    while not current_location.get('end', False):
+        show_location(current_location['key'])
         
         event_result = triger_random_events(player, current_location)
         
