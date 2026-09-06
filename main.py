@@ -23,7 +23,7 @@ def menu():
     
     say('Для выбора ответа введите цифру и нажмите Enter!')
     
-    input('''Нажмите любую клавишу чтобы начать''')
+    input('''Нажмите любую клавишу чтобы начать\n''')
     
     return intro()
 
@@ -36,9 +36,6 @@ def create_player():
 
 def main():
     location = menu()
-    
-    if location is not None:
-             game(location)
 
     player = create_player()
     result = game(player, location)
@@ -135,4 +132,4 @@ def ending():
 
 
 if __name__ == '__main__':
-    menu()
+    main()
