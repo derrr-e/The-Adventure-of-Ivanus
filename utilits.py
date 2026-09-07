@@ -1,3 +1,5 @@
+import select
+import sys
 from time import sleep
 from locations import locations
 
@@ -48,13 +50,16 @@ def change_hp(player, amount):
     player['hp'] += amount
     print(f"{old_hp} ---> {player['hp']} ({amount:+}) ")
 
-text_delay = 1
-
-def say(text='', delay = 1):
+def say(text='', delay = 1, skip_text=True):
     print(text)
-    
-    if text_delay > 0:
-        sleep(delay * text_delay)
+    elapsed = 0
+    while elapsed < delay:    
+        readable, _, _ = select.select([sys.stdin], [], [], 0)
+        if sys.stdin in readable:
+            line = sys.stdin.readline()
+            break
+        sleep(0.1)
+        elapsed += 0.1
 
 def show_location(key):
     location = locations[key]
