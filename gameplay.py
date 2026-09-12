@@ -6,8 +6,11 @@ from utilits import say, get_choice, show_location
 from presets.items_presets import items_presets
 from locations import locations
 
-def rest(player, current_location):
+def rest(player, current_location, count):
 
+    if count > 1:
+        say('Ты уже отдохнул здесь')
+        return{'status': 'alive'}
     
     print('Ты присел отдохнуть')
 
@@ -72,20 +75,23 @@ def sp_event(player):
     pass
 
 def handle_location_menu(player, location):
-    choice = location_menu()
-    if choice == 1:
-        return{'status': 'alive'}
-    
-    elif choice == 2:
-        rest_result = rest(player, location)
+    rest_count = 0
+    while True:
+        choice = location_menu()
+        if choice == 1:
+            return{'status': 'alive'}
         
-        return rest_result
+        elif choice == 2:
+            rest_result = rest(player, location, rest_count)
+            if rest_result['status'] == 'dead':
+                return rest_result
 
-    elif choice == 3:
-        player.open_inventory()
-        
-    else:
-        return {'status': 'quit'}
+        elif choice == 3:
+            player.open_inventory()
+            
+        else:
+            return {'status': 'quit'}
+        rest_count += 1
     
 def random_event(player, location):
     

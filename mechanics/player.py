@@ -1,9 +1,10 @@
-from utilits import say
+from utilits import say, get_choice
 
 from mechanics.character import Character
 from mechanics.weapon import Weapon
 from presets.items_presets import items_presets
 from mechanics.exeptions import ItemNotFoundError, ItemCannotBeUsedError, ItemPresetNotFoundError
+from mechanics.inventory import print_inventory, answer_hadler
 class Player(Character):
     
     def __init__(self, name,  hp, weapon, extra_damage=0):
@@ -59,7 +60,11 @@ class Player(Character):
     def __str__(self):
         return f'Имя: {self.name}, Здоровье: {self.hp} '
     
-    
+    def open_inventory(self):
+        while True:
+            number = print_inventory(self)
+            answer = get_choice(number + 1)
+            
 #     # def open_inventory(self, ):
     
     
@@ -100,27 +105,4 @@ class Player(Character):
 #             answer = get_choice(2)
             
 #             if answer == 1:
-#                 say(f'Ты {self.items[item]['action'].lower()} {self.items[item]['name'].lower()}')
-                
-#                 change_hp(player, self.items[item]['heal'])
-                
-#                 self.self.items[item] -= 1
-                
-                
-#                 if self.self.items[item] == 0:
-#                     del self.self.items[item]
-                
-#                 input('Нажми Enter чтобы продолжить')
-                
-# # player = {
-    
-#     'hp': 100,
-#     'damage': 5,
-#     'items': {
-        
-        
-        
-#     },
-    
-    
-# }
+#                 use_item
