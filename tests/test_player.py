@@ -1,11 +1,11 @@
 import pytest
-
+from unittest.mock import patch
 from mechanics.player import Player
 from mechanics.weapon import Weapon
 from mechanics.exeptions import ItemNotFoundError, ItemPresetNotFoundError, ItemCannotBeUsedError
 @pytest.fixture
 def player():
-    sword = Weapon.from_name('sword')
+    sword = Weapon.from_name('old_sword')
     return Player(name='Test', hp=100, weapon=sword)
 
 def test_add_item_new(player):
@@ -31,3 +31,11 @@ def test_use_unused_item(player):
         player.use_item('rock')
         
         
+def test_player_healing_not_exceed_max_hp(player):
+    player.add_item('apple')
+    player.hp = 99
+    with patch('mechanics.items.say'):
+        with patch('utilits.say'):
+            player.use_item('apple')
+            
+    assert player.hp == 100
