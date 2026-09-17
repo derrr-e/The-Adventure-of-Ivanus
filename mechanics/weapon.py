@@ -11,8 +11,11 @@ class Weapon(Item):
         self.damage = damage
 
     @classmethod
+    def default(cls):
+        return cls('Кулаки', 'Голые руки, которые не очень хороши в бою', 1)
+
+    @classmethod
     def from_name(cls, key):
         data = wearons[key]
         return cls(data['name'], data['description'], data['damage'])
     
-fists = Weapon.from_name('fists')
