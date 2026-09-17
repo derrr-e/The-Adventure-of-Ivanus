@@ -2,9 +2,10 @@ from utilits import say, get_choice
 
 from mechanics.character import Character
 from mechanics.weapon import Weapon
-from presets.items_presets import items_presets
+from presets.all_items import all_items
+from presets.class_map import class_map
 from mechanics.exeptions import ItemNotFoundError, ItemCannotBeUsedError, ItemPresetNotFoundError
-from mechanics.inventory import print_inventory, answer_hadler
+from mechanics.inventory import print_inventory
 class Player(Character):
     
     def __init__(self, name,  hp, weapon, extra_damage=0):
@@ -18,23 +19,30 @@ class Player(Character):
         self.extra_damage = extra_damage
     
     def add_item(self, key, count=1):
-        if key not in items_presets:
+        if key not in all_items:
             raise ItemPresetNotFoundError(key)
         
         self.items[key] = self.items.get(key, 0) + count
         
-
+    def drop_item(self, key):
+        self.items[key] -= 1
+        if self.items[key] <= 0:
+            del self.items[key]
+    
     def use_item(self, key):
         if self.items.get(key, 0 ) <= 0:
             raise ItemNotFoundError(key)
             
         try:
-            data = items_presets[key]
+            data = all_items[key].copy()
 
         except KeyError:
             raise ItemPresetNotFoundError(key)
         
-        cls = data.pop('class')
+        cls_key = data.pop('class')
+        cls = class_map[cls_key]
+        data.pop('droppable')
+        data.pop('key')
         item = cls(**data)
         
         if item.action is not None:
@@ -44,7 +52,7 @@ class Player(Character):
                 
             if self.items[key] <= 0:
                 del self.items[key] 
-            return
+            return 'print_inventory'
         
         else:
             raise ItemCannotBeUsedError(key)
@@ -60,49 +68,4 @@ class Player(Character):
     def __str__(self):
         return f'Имя: {self.name}, Здоровье: {self.hp} '
     
-    def open_inventory(self):
-        while True:
-            number = print_inventory(self)
-            answer = get_choice(number + 1)
-            
-#     # def open_inventory(self, ):
-    
-    
-#         while True:
         
-#             if not self.items:
-#                 say("Твой инвентарь пуст", 2)
-#                 return
-                
-#             inventory_items = list(self.items.items())
-            
-            
-#             for number, (item, count) in enumerate(inventory_items, start=1):
-#                 say(f'{number}. {self.items[item]['name']}: {count}', 1.5)
-            
-#             say(f'\n{number + 1}. Выход', 2)    
-            
-            
-#             chose = get_choice(len(inventory_items) + 1)
-            
-            
-#             if chose <= len(inventory_items):
-            
-#                 item, count = inventory_items[chose - 1]
-            
-#             else:
-#                 break    
-            
-#             print(f'''
-#         {self.items[item]['name']}
-#         {self.items[item]['discription']}
-
-#         1. {self.items[item]['action']}
-#         2. Выход              
-                    
-#                     ''')
-
-#             answer = get_choice(2)
-            
-#             if answer == 1:
-#                 use_item
