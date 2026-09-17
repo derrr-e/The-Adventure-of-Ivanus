@@ -18,14 +18,14 @@ def direction(value, gender):
 def report_hp_change(amount):
 
     if amount != 0:
-        say(f'Твое здоровье {direction(amount, 'mid')} на {abs(amount)}')
+        say(f'Твое здоровье {direction(amount, 'mid').lower()} на {abs(amount)}')
         
     return
 
 def report_damage_change(amount):
     
     if amount != 0:
-        say(f'Твой урон {direction(amount, 'man')} на {abs(amount)}')
+        say(f'Твой урон {direction(amount, 'man').lower()} на {abs(amount)}')
     
     return
     

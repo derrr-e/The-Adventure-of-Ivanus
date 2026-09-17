@@ -1,14 +1,8 @@
 from utilits import say, direction, report_damage_change, report_hp_change
+from presets.items_presets import items_presets
 
 
 class Item:
-
-    presets: dict[str, dict] = {
-        "rock": {
-            "name": "Камень",
-            "description": "Маленький камень, который можно найти на земле",
-        }
-    }
 
     def __init__(self, name, description, action=None):
 
@@ -23,8 +17,8 @@ class Item:
 
     @classmethod
     def from_name(cls, key):
-        data = cls.presets[key]
-        return cls(**data)
+        data = items_presets[key]
+        return cls(data['name'], data['description'], data['action'])
 
     def __str__(self):
         return f"{self.name}.\n{self.description}"
@@ -38,15 +32,6 @@ class Item:
 
 class Consumable(Item):
 
-    presets: dict[str, dict] = {
-        "apple": {
-            "name": "Яблоко",
-            "description": "Сочный фрукт, который можно съесть",
-            "action": {"past": "Съел", "can_do": "Съесть"},
-            "heal": 5,
-        }
-    }
-
     def __init__(self, name, description, action, heal=0, damage=0):
         super().__init__(name, description, action)
 
@@ -59,12 +44,12 @@ class Consumable(Item):
         say(f"Ты {self.action['past'].lower()} {self.name}")
 
         report_hp_change(self.heal)
-
         report_damage_change(self.damage)
 
         player.heal(self.heal)
-
         player.extra_damage += self.damage
+
+        return 'print_inventory'
 
     def __eq__(self, other):
         if not isinstance(other, Consumable):
