@@ -13,10 +13,6 @@ from mechanics.sp_events import sp_event
 
 from utilits import get_choice, change_hp, show_location, say
 
-
-
-
-
   
 def menu():
     print('Добро пожаловать в The adventure of Ivanus!')
@@ -30,7 +26,7 @@ def menu():
 
 def create_player():
      
-    fists = Weapon.from_name('fists')
+    fists = Weapon.from_name('old_sword')
     return Player(name= "ivanus", hp= 100, weapon=fists, )
 
 
