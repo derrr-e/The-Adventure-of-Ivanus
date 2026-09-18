@@ -4,7 +4,9 @@ from mechanics.player import Player
 from mechanics.battle import run_battle
 from utilits import say, get_choice, show_location
 from presets.items_presets import items_presets
+from presets.class_map import class_map
 from locations import locations
+from mechanics.inventory import open_inventory
 
 def rest(player, current_location, count):
 
@@ -35,6 +37,10 @@ def find_item(player):
     key = choice(list(items_presets.keys()))
     data = items_presets[key].copy()
     cls = data.pop('class')
+    data.pop('droppable')
+    data.pop('key')
+    cls = class_map[cls]
+    
     item = cls(**data)
     
     say(f'Ты нашел {item.name}', 2)
@@ -87,7 +93,7 @@ def handle_location_menu(player, location):
                 return rest_result
 
         elif choice == 3:
-            player.open_inventory()
+            open_inventory(player)
             
         else:
             return {'status': 'quit'}

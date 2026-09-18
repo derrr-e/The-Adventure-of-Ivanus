@@ -4,6 +4,7 @@ from mechanics.player import Player
 from mechanics.enemies import Enemy
 from utilits import say, get_choice
 from mechanics.exeptions import LocationHasNoEnemiesError
+from mechanics.inventory import open_inventory
 
 class Battle():
     
@@ -30,10 +31,7 @@ class Battle():
                 }
                 
                 action = yield  'need_player_action'
-                
-                
                 result = actions[action]()
-                
                 
                 yield result
                 
@@ -126,7 +124,7 @@ def handle_non_turn_action(action, enemy, player):
                             
 нажми Enter чтобы выйти
                                '''),
-        'open_inventory': lambda: player.open_inventory()
+        'open_inventory': lambda: open_inventory(player)
         
     }
 
