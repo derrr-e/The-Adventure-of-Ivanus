@@ -18,7 +18,7 @@ class Item:
     @classmethod
     def from_name(cls, key):
         data = items_presets[key]
-        return cls(data['name'], data['description'], data['action'])
+        return cls(data["name"], data["description"], data["action"])
 
     def __str__(self):
         return f"{self.name}.\n{self.description}"
@@ -49,7 +49,7 @@ class Consumable(Item):
         player.heal(self.heal)
         player.extra_damage += self.damage
 
-        return 'print_inventory'
+        return "print_inventory"
 
     def __eq__(self, other):
         if not isinstance(other, Consumable):

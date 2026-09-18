@@ -8,137 +8,147 @@ from presets.class_map import class_map
 from locations import locations
 from mechanics.inventory import open_inventory
 
+
 def rest(player, current_location, count):
 
     if count > 1:
-        say('Ты уже отдохнул здесь')
-        return{'status': 'alive'}
-    
-    print('Ты присел отдохнуть')
+        say("Ты уже отдохнул здесь")
+        return {"status": "alive"}
+
+    print("Ты присел отдохнуть")
 
     if randint(1, 100) <= 20:
-        
-        run_battle(player, current_location, intro_title='Пока ты спал на тебя напал {name}')
-    
-        say('', 2)
-        say('Это была ужасная ночь', 2)
-        
-        return {'status': 'alive' if player.hp > 0 else 'dead'}
-    
+
+        run_battle(
+            player, current_location, intro_title="Пока ты спал на тебя напал {name}"
+        )
+
+        say("", 2)
+        say("Это была ужасная ночь", 2)
+
+        return {"status": "alive" if player.hp > 0 else "dead"}
+
     else:
         player.heal(5)
-        say('Твое здоровье пополнено на 5!')
-        
-        return {'status': 'alive' if player.hp > 0 else 'dead'}
-    
-    
+        say("Твое здоровье пополнено на 5!")
+
+        return {"status": "alive" if player.hp > 0 else "dead"}
+
+
 def find_item(player):
-    
+
     key = choice(list(items_presets.keys()))
     data = items_presets[key].copy()
-    cls = data.pop('class')
-    data.pop('droppable')
-    data.pop('key')
+    cls = data.pop("class")
+    data.pop("droppable")
+    data.pop("key")
     cls = class_map[cls]
-    
+
     item = cls(**data)
-    
-    say(f'Ты нашел {item.name}', 2)
-    say(f'Взять {item.name.lower()}?', 1.5)
-    
-    print('''
+
+    say(f"Ты нашел {item.name}", 2)
+    say(f"Взять {item.name.lower()}?", 1.5)
+
+    print("""
 1. Взять
 2. Оставить
-          ''')
+          """)
     answer = get_choice(2)
-    
+
     if answer == 1:
         player.add_item(key)
-        say(f'{item.name} добавлено в твой инвентарь')
-        input('Нажми Enter чтобы продолжить')
+        say(f"{item.name} добавлено в твой инвентарь")
+        input("Нажми Enter чтобы продолжить")
         return
-    
+
     else:
-        say('Ты просто прошел мимо')
-        input('Нажми Enter чтобы продолжить')
+        say("Ты просто прошел мимо")
+        input("Нажми Enter чтобы продолжить")
         return
-    
+
+
 def location_menu():
-    
-    print('''
+
+    print("""
 1. Идти дальше
 2. Отдохнуть
 3. Открыть инвентарь
 4. Выйти (прогресс не будет сохранен!!!!!)
-          ''')
-    
+          """)
+
     return get_choice(4)
-    
+
+
 def ch_loc(location):
-    return locations[location['next']]
+    return locations[location["next"]]
+
 
 def sp_event(player):
     pass
+
 
 def handle_location_menu(player, location):
     rest_count = 0
     while True:
         choice = location_menu()
         if choice == 1:
-            return{'status': 'alive'}
-        
+            return {"status": "alive"}
+
         elif choice == 2:
             rest_result = rest(player, location, rest_count)
-            if rest_result['status'] == 'dead':
+            if rest_result["status"] == "dead":
                 return rest_result
 
         elif choice == 3:
             open_inventory(player)
-            
+
         else:
-            return {'status': 'quit'}
+            return {"status": "quit"}
         rest_count += 1
-    
+
+
 def random_event(player, location):
-    
-    if location['event_weights'] is None:
+
+    if location["event_weights"] is None:
         return
-    
+
     event_handlers = {
-        'enemy': lambda: run_battle(player, location),
-        'item': lambda: find_item(player),
-        'sp_event': lambda: sp_event(player)
+        "enemy": lambda: run_battle(player, location),
+        "item": lambda: find_item(player),
+        "sp_event": lambda: sp_event(player),
     }
-    
-    weights = location['event_weights']
-    
+
+    weights = location["event_weights"]
+
     event_type = choices(list(weights.keys()), weights=list(weights.values()))[0]
-    
+
     return event_handlers[event_type]()
+
 
 def triger_random_events(player, location):
     count = randint(3, 7)
-    
+
     for _ in range(count):
         result = random_event(player, location)
-        if result and result['status'] == 'dead':
-            return{'status': 'dead'}
-    return{'status': 'alive'}
+        if result and result["status"] == "dead":
+            return {"status": "dead"}
+    return {"status": "alive"}
+
 
 def game(player, start_location_key):
     current_location = locations[start_location_key]
-    
-    while not current_location.get('end', False):
-        show_location(current_location['key'])
-        
+
+    while not current_location.get("end", False):
+        show_location(current_location["key"])
+
         event_result = triger_random_events(player, current_location)
-        
-        if event_result['status'] == 'dead':
-            return{'status': 'dead'}
-        
+
+        if event_result["status"] == "dead":
+            return {"status": "dead"}
+
         menu_result = handle_location_menu(player, current_location)
-        if menu_result != 'alive':
+        if menu_result != "alive":
             return menu_result
         current_location = ch_loc(current_location)
-    
-    return {'status': 'completed'}
+
+    return {"status": "completed"}
