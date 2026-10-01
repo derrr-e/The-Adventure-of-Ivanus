@@ -52,6 +52,8 @@ def main():
     elif result == "quit":
         say("Выходим...", 3)
 
+        return
+
     elif result == "completed":
         say("Ты прошел игру!!!!")
 
