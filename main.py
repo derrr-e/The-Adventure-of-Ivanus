@@ -1,27 +1,22 @@
-from random import choice, randint
-
-from mechanics.enemies import Enemy
-from mechanics.player import Player
-from mechanics.items import Item
 from gameplay import game
-from story.intro import intro
+from mechanics.player import Player
 from mechanics.weapon import Weapon
-from presets.weapon_presets import wearons
-
-from locations import locations
-from mechanics.sp_events import sp_event
-
-from utilits import get_choice, change_hp, show_location, say
+from story.ending import ending
+from story.intro import intro
+from utilits import say, get_choice
 
 
 def menu():
-    print("Добро пожаловать в The adventure of Ivanus!")
-
+    say("Добро пожаловать в The adventure of Ivanus!", 0.5)
     say("Для выбора ответа введите цифру и нажмите Enter!")
+    print("""
+1. Начать игру
+2. Выйти
+          """)
 
-    input("""Нажмите любую клавишу чтобы начать\n""")
+    choice = get_choice(2)
 
-    return intro()
+    return {"status": "start"} if choice == 1 else {"status": "quit"}
 
 
 def create_player():
@@ -35,12 +30,23 @@ def create_player():
 
 
 def main():
-    location = menu()
+    menu_result = menu()
 
-    player = create_player()
-    result = game(player, location)
+    if menu_result["status"] == "quit":
+        say("Выходим...", 1)
+        return
 
-    if result == "dead":
+    elif menu_result["status"] == "start":
+        intro_result = intro()
+
+    if intro_result['status'] == 'quit':
+        return
+
+    elif intro_result['status'] == 'continue':
+        player = create_player()
+        result = game(player, intro_result['location'])
+
+    if result["status"] == "dead":
         input("""
 Игра окончена!
 
@@ -49,19 +55,22 @@ def main():
               """)
         menu()
 
-    elif result == "quit":
-        say("Выходим...", 3)
-
+    elif result["status"] == "quit":
+        say("Выходим...", 1)
         return
 
-    elif result == "completed":
-        say("Ты прошел игру!!!!")
+    elif result["status"] == "completed":
+        ending_result = ending()
 
-        say("Над игрой старались:")
+        if ending_result["status"] == "completed":
+            say("Поздравляю! Ты прошел игру!")
+            input("Нажми Enter чтобы вернутся в меню")
+            menu()
 
-        print("Der")
-
-        return
+        elif ending_result["status"] == "dead":
+            say("Ты проиграл :(")
+            input("Нажми Enter чтобы вернутся в меню")
+            menu()
 
 
 if __name__ == "__main__":
