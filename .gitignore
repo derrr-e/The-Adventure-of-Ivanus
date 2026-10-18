@@ -2,4 +2,5 @@ __pycache__/
 *.pyc
 .pytest_cache/
 .mypy_cache/
-manual_playground.py.vscode/
+manual_playground.py
+.vscode/

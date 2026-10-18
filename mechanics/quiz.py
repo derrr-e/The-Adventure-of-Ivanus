@@ -14,6 +14,8 @@ class QuizConfig(TypedDict):
     hint: str
     win_reaction: str
     character: str
+    idk_answer: int
+    idk_reaction: str
 
 with open("presets/quiz_presets.json", encoding="utf-8") as f:
     quizzes = json.load(f)
@@ -29,6 +31,10 @@ def quiz(config: QuizConfig) -> dict[str, str]:
         for number, variant in config["variants"].items():
             say(f"{int(number)}. {variant}", 0.25)
         answer = get_choice(len(config["variants"]))
+        
+        if answer == config['idk_answer']:
+            character_says(name=config['character'], text=config["idk_reaction"])
+            continue
 
         if answer == config["correct_answer"]:
             character_says(name=config['character'], text=config["win_reaction"])
