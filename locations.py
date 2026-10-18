@@ -1,4 +1,15 @@
-locations = {
+from typing import TypedDict, NotRequired
+
+class location(TypedDict):
+    key: str
+    name: str
+    description: str
+    next: str
+    enemies: tuple | None
+    event_weights: dict[str, int]
+    end: NotRequired[bool]
+     
+locations: dict[str, location] = {
     "tavern": {
         "key": "tavern",
         "name": "Таверна",
@@ -11,6 +22,7 @@ locations = {
             "sp_event": 0,
         },
     },
+    
     "forest": {
         "key": "forest",
         "name": "Лес",

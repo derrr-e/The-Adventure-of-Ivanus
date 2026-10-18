@@ -1,85 +1,34 @@
 from utilits import say, get_choice, show_location
 from locations import locations
+import json
+from mechanics.quiz import quiz, quizzes
 
+with open("presets/ending_parts.json", encoding="utf-8") as f:
+    ending_parts = json.load(f)
+    
+def play_lines(lines: list[dict]) -> None:
+    for line in lines:
+        say(line['text'], line['delay'])
+
+def intro_part():
+    show_location('mountain_top')
+    play_lines(ending_parts['intro'])
+            
+def win_outro():
+    play_lines(ending_parts['win_outro'])
+
+def lose_outro():
+    play_lines(ending_parts['lose_outro'])
 
 def ending():
-    show_location(locations["mountain_top"])
-
-    say("Вот и приближается конец...", 2)
-
-    say(
-        "Поднявшись на вершину ты видишь Могучего Орла, который сидит за каменным столом и пьет минералку...",
-        2,
-    )
-
-    say("Ты: Йоу чувак мне реально нужна эта минералка, дай ее плис", 2)
-
-    say(
-        "Орел: Чувак ну чтобы тебе получить мою шикарную минералку ты должен доказать то, что ты ее ДЕЙСТВИТЕЛЬНО достоин",
-        2,
-    )
-
-    say("Ты: И как же мне это сделать?", 2)
-
-    say(
-        "Орел: Ты должен ответить мне на вопрос, который всю жизнь меня преследует....",
-        2,
-    )
-
-    say("Почему скаты такие плоские?", 2)
-
-    say("""
-1. Потому что их плавники срослись с телом
-2. Потому что их сжало давлением
-3. Они по рофлу захотели стать плоскими
-4. Они живут на дне и им удобнее быть плоскими
-5. Я незнаю
-          """)
-
-    actions = {
-        3: lambda: print("Орел: Звучит клево, но нет"),
-        4: lambda: print(
-            "Орел: Это правильный ответ, наверное, но тут разраб написал что правильно так что ты молодец!"
-        ),
-    }
-
-    mistakes = 0
-
-    while True:
-
-        answer = get_choice(5)
-
-        if answer == 4:
-            actions[answer]()
-            break
-
-        elif answer == 3:
-            actions[answer]()
-            continue
-
-        mistakes += 1
-
-        if mistakes == 1:
-            print("Орел: Ну нет")
-
-        elif mistakes == 2:
-            print("Орел: Знаешь, это вообще не правильный ответ")
-
-        elif mistakes == 3:
-            print(
-                "Орел: Я уже 200 лет сижу на этой горе и еще никто так плохо не отвечал"
-            )
-
-        elif mistakes == 4:
-            print("Ладно, ответ связан с тем, где они живут")
-
-    say("Орел: Вот тебе деньги на лосси, и можешь уезжать отсюда куда хочешь!", 2)
-
-    say("(Лосси это лосетакси)", 2)
-
-    say(
-        "Ты взял деньги, вызвал ЛОССИ и уехал обратно в таверну где ты отдал минералку старику",
-        2,
-    )
-
-    say("Вот так все и закончилось.... наверное?", 2)
+    intro_part()
+    result = quiz(quizzes['eagle_quiz'])
+    
+    if result['status'] == 'win':
+        win_outro()
+        return {'status': 'completed'}
+    
+    elif result['status'] == 'lose':
+        lose_outro()
+        return {'status': 'dead'}
+    

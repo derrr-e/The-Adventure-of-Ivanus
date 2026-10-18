@@ -1,8 +1,9 @@
 from utilits import show_location, say, get_choice
 from locations import locations
+from typing import TypedDict
 
 
-def intro():
+def intro() -> dict:
 
     current_location = locations["tavern"]
 
@@ -35,7 +36,7 @@ def intro():
             "Ты так и не узнал что у тебя могло бы быть за приключение. Может оно и к лучшему?",
             3,
         )
-        return
+        return {'status': 'quit'}
 
     else:
         say("Ты: Конечно помогу", 2)
@@ -43,4 +44,4 @@ def intro():
         say("Старик: Возьми этот меч! Без него тебе будет трудно...")
         say("Ты вышел из таверны и каким то образом сам знал куда надо идти", 3)
 
-        return current_location["next"]
+        return {'status': 'continue', 'location': current_location["next"]}
