@@ -63,10 +63,11 @@ def say(text="", delay=1, skip_text=True):
         elapsed += 0.1
 
 
-def show_location(key:str):
+def show_location(key: str):
     loc: location = locations[key]
     say(f"{loc['name']}, {loc['description'].lower()}", 2)
 
+
 def character_says(name: str, text: str) -> None:
-    say(f'{name}: {text}')
-    input('Нажми Enter чтобы продолжить')
+    say(f"{name}: {text}")
+    input("Нажми Enter чтобы продолжить")

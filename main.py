@@ -39,12 +39,12 @@ def main():
     elif menu_result["status"] == "start":
         intro_result = intro()
 
-    if intro_result['status'] == 'quit':
+    if intro_result["status"] == "quit":
         return
 
-    elif intro_result['status'] == 'continue':
+    elif intro_result["status"] == "continue":
         player = create_player()
-        result = game(player, intro_result['location'])
+        result = game(player, intro_result["location"])
 
     if result["status"] == "dead":
         input("""

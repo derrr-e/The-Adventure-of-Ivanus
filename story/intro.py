@@ -36,7 +36,7 @@ def intro() -> dict:
             "Ты так и не узнал что у тебя могло бы быть за приключение. Может оно и к лучшему?",
             3,
         )
-        return {'status': 'quit'}
+        return {"status": "quit"}
 
     else:
         say("Ты: Конечно помогу", 2)
@@ -44,4 +44,4 @@ def intro() -> dict:
         say("Старик: Возьми этот меч! Без него тебе будет трудно...")
         say("Ты вышел из таверны и каким то образом сам знал куда надо идти", 3)
 
-        return {'status': 'continue', 'location': current_location["next"]}
+        return {"status": "continue", "location": current_location["next"]}

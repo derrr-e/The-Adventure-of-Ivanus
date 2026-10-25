@@ -1,5 +1,6 @@
 from typing import TypedDict, NotRequired
 
+
 class location(TypedDict):
     key: str
     name: str
@@ -8,7 +9,8 @@ class location(TypedDict):
     enemies: tuple | None
     event_weights: dict[str, int]
     end: NotRequired[bool]
-     
+
+
 locations: dict[str, location] = {
     "tavern": {
         "key": "tavern",
@@ -22,7 +24,6 @@ locations: dict[str, location] = {
             "sp_event": 0,
         },
     },
-    
     "forest": {
         "key": "forest",
         "name": "Лес",

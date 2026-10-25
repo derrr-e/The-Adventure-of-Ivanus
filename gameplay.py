@@ -147,7 +147,7 @@ def game(player, start_location_key):
             return {"status": "dead"}
 
         menu_result = handle_location_menu(player, current_location)
-        if menu_result['status'] != "alive":
+        if menu_result["status"] != "alive":
             return menu_result
         current_location = ch_loc(current_location)
 
